@@ -1,5 +1,6 @@
 import React from 'react';
 import { personalData } from '../data/siteData';
+import { Link } from '../router/Router';
 import { IconArrowRight, IconCpu } from './Icons';
 
 export const Hero = () => {
@@ -33,21 +34,16 @@ export const Hero = () => {
 
             {/* Action CTAs */}
             <div className="hero-actions">
-              <a href="#projects" className="btn btn-primary">
+              <Link to="/projects" className="btn btn-primary">
                 <span>Explore Projects</span>
                 <IconArrowRight size={16} />
-              </a>
-              <a
-                href="/resume/Nikhil_Pandey_Final_A4_Portrait_Resume_v4.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-secondary"
-              >
+              </Link>
+              <Link to="/resume" className="btn btn-secondary">
                 <span>Resume (PDF)</span>
-              </a>
-              <a href="#contact" className="btn btn-secondary">
+              </Link>
+              <Link to="/contact" className="btn btn-secondary">
                 <span>Connect</span>
-              </a>
+              </Link>
             </div>
           </div>
 

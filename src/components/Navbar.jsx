@@ -1,47 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Link, useRouter } from '../router/Router';
 import { IconMenu, IconClose, IconArrowRight } from './Icons';
 
 export const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('home');
+  const { currentPath } = useRouter();
 
   const navLinks = [
-    { label: 'Home', href: '#home' },
-    { label: 'About', href: '#about' },
-    { label: 'What I Build', href: '#what-i-build' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Hackathons', href: '#hackathons' },
-    { label: 'Achievements', href: '#achievements' },
-    { label: 'Certifications', href: '#certifications' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Resume', href: '#resume' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'About', to: '/about' },
+    { label: 'Projects', to: '/projects' },
+    { label: 'Hackathons', to: '/hackathons' },
+    { label: 'Experience', to: '/experience' },
+    { label: 'Certifications', to: '/certifications' },
+    { label: 'Skills', to: '/skills' },
+    { label: 'Resume', to: '/resume' },
+    { label: 'Contact', to: '/contact' },
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const sections = ['home', 'about', 'what-i-build', 'projects', 'hackathons', 'achievements', 'certifications', 'skills', 'resume', 'contact'];
-      const scrollPosition = window.scrollY + 180;
-
-      for (const sectionId of sections) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(sectionId);
-            return;
-          }
-        }
-      }
-      if (window.scrollY < 200) {
-        setActiveSection('home');
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleLinkClick = () => {
     setMobileOpen(false);
@@ -51,28 +25,29 @@ export const Navbar = () => {
     <header className="navbar-header" role="banner">
       <div className="container">
         <div className="navbar-inner">
-          <a href="#home" className="brand-link" aria-label="Nikhil Pandey Home">
+          <Link to="/" className="brand-link" aria-label="Nikhil Pandey Home" onClick={handleLinkClick}>
             <span className="brand-monogram">NP</span>
             <span>Nikhil Pandey</span>
-          </a>
+          </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation with Real Crawlable Links */}
           <nav className="nav-links-desktop" aria-label="Main Navigation">
             {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className={`nav-link ${activeSection === link.href.substring(1) ? 'active' : ''}`}
+              <Link
+                key={link.to}
+                to={link.to}
+                className="nav-link"
+                activeClassName="active"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <a href="#contact" className="btn btn-primary nav-cta-btn">
+            <Link to="/contact" className="btn btn-primary nav-cta-btn">
               Connect
-            </a>
+            </Link>
           </nav>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Toggle Button */}
           <button
             type="button"
             className="mobile-menu-btn"
@@ -85,7 +60,7 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Menu Drawer */}
       {mobileOpen && (
         <>
           <div
@@ -95,10 +70,10 @@ export const Navbar = () => {
           />
           <aside className="mobile-drawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu">
             <div className="mobile-drawer-header">
-              <span className="brand-link">
+              <Link to="/" className="brand-link" onClick={handleLinkClick}>
                 <span className="brand-monogram">NP</span>
                 <span>Nikhil Pandey</span>
-              </span>
+              </Link>
               <button
                 type="button"
                 className="modal-close-btn"
@@ -110,26 +85,36 @@ export const Navbar = () => {
             </div>
 
             <nav className="mobile-drawer-links" aria-label="Mobile Navigation Links">
+              <Link
+                to="/"
+                className="mobile-nav-link"
+                activeClassName="active"
+                onClick={handleLinkClick}
+              >
+                <span>Home</span>
+                <IconArrowRight size={14} />
+              </Link>
               {navLinks.map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className={`mobile-nav-link ${activeSection === link.href.substring(1) ? 'active' : ''}`}
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="mobile-nav-link"
+                  activeClassName="active"
                   onClick={handleLinkClick}
                 >
                   <span>{link.label}</span>
                   <IconArrowRight size={14} />
-                </a>
+                </Link>
               ))}
               <div style={{ marginTop: '1.5rem' }}>
-                <a
-                  href="#contact"
+                <Link
+                  to="/contact"
                   className="btn btn-primary"
                   style={{ width: '100%' }}
                   onClick={handleLinkClick}
                 >
                   Connect With Me
-                </a>
+                </Link>
               </div>
             </nav>
           </aside>
